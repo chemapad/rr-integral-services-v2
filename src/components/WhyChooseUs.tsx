@@ -1,6 +1,9 @@
 import { ShieldCheck, Award, Sparkles } from 'lucide-react';
+import { useLanguageTheme } from '../context/LanguageThemeContext';
 
 export const WhyChooseUs = () => {
+  const { t } = useLanguageTheme();
+
   return (
     <section id="nosotros" className="py-20 bg-slate-950 relative overflow-hidden border-t border-b border-slate-800/80">
       
@@ -9,25 +12,25 @@ export const WhyChooseUs = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Main High-Impact Banner matching Flyer */}
+        {/* Main High-Impact Banner */}
         <div className="glass-card p-8 md:p-12 rounded-3xl border border-amber-500/30 text-center relative overflow-hidden mb-16 shadow-2xl">
           <div className="absolute -top-12 -right-12 w-40 h-40 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
 
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-4">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Ventaja R & R Integral Services</span>
+            <span>{t.whyUs.badge}</span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight max-w-3xl mx-auto leading-snug">
-            Todo en un solo lugar
+            {t.whyUs.title}
           </h2>
           
           <p className="text-amber-400 font-serif-brand font-bold text-lg sm:text-2xl mt-2 tracking-wide uppercase">
-            Ahorra tiempo, evita estrés y deja tus trámites en manos de profesionales.
+            {t.whyUs.subtitle}
           </p>
 
           <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mt-4 font-light leading-relaxed">
-            Ya sea que necesites resolver tu estatus migratorio, preparar tus impuestos anuales, gestionar la contabilidad de tu empresa o notarizar un poder urgente, te brindamos asesoría seria, rápida y confiable.
+            {t.whyUs.description}
           </p>
         </div>
 
@@ -39,10 +42,10 @@ export const WhyChooseUs = () => {
               QB
             </div>
             <h3 className="font-serif-brand text-lg font-bold text-white">
-              QuickBooks ProAdvisor
+              {t.whyUs.cards[0].title}
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Certificados en configuración, limpieza de libros (Cleanup) y conciliaciones bancarias para que tu negocio mantenga finanzas claras y en regla.
+              {t.whyUs.cards[0].desc}
             </p>
           </div>
 
@@ -51,10 +54,10 @@ export const WhyChooseUs = () => {
               <Award className="w-6 h-6" />
             </div>
             <h3 className="font-serif-brand text-lg font-bold text-white">
-              Preparación de Impuestos & IRS
+              {t.whyUs.cards[1].title}
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Especialistas en declaraciones personales (1040), LLC, Corporaciones, aplicación e ITIN number y planes de pago directos con el IRS.
+              {t.whyUs.cards[1].desc}
             </p>
           </div>
 
@@ -63,10 +66,10 @@ export const WhyChooseUs = () => {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="font-serif-brand text-lg font-bold text-white">
-              Notary & Remote Online (RON)
+              {t.whyUs.cards[2].title}
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Servicios notariales presenciales y vía remota en línea (RON) para firmas electrónicas válidas de poderes, convenios familiares y documentos legales.
+              {t.whyUs.cards[2].desc}
             </p>
           </div>
 

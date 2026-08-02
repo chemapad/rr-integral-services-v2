@@ -19,10 +19,12 @@ import {
   CheckCircle,
   MessageCircle
 } from 'lucide-react';
+import { useLanguageTheme } from '../context/LanguageThemeContext';
 
 export const ServicesSection = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const { lang, t } = useLanguageTheme();
 
   // Map icon strings to Lucide components
   const getIcon = (name: string) => {
@@ -48,17 +50,23 @@ export const ServicesSection = () => {
     if (!searchTerm.trim()) return matchesCategory;
 
     const query = searchTerm.toLowerCase();
-    const matchesTitle = cat.title.toLowerCase().includes(query);
-    const matchesSubtitle = cat.subtitle?.toLowerCase().includes(query);
-    const matchesItems = cat.items.some(item => item.toLowerCase().includes(query));
+    const titleText = cat.title[lang].toLowerCase();
+    const subtitleText = cat.subtitle?.[lang]?.toLowerCase() || '';
+    const itemsList = cat.items[lang];
+    const matchesItems = itemsList.some(item => item.toLowerCase().includes(query));
 
-    return matchesCategory && (matchesTitle || matchesSubtitle || matchesItems);
+    return matchesCategory && (titleText.includes(query) || subtitleText.includes(query) || matchesItems);
   });
 
   const handleWhatsappClick = (categoryTitle: string, item?: string) => {
     const text = item 
-      ? `Hola R&R Integral Services, me interesa recibir información sobre: ${categoryTitle} - ${item}`
-      : `Hola R&R Integral Services, me interesa consultar sobre el servicio de: ${categoryTitle}`;
+      ? (lang === 'es'
+          ? `Hola R&R Integral Services, me interesa recibir información sobre: ${categoryTitle} - ${item}`
+          : `Hello R&R Integral Services, I am interested in receiving information about: ${categoryTitle} - ${item}`)
+      : (lang === 'es'
+          ? `Hola R&R Integral Services, me interesa consultar sobre el servicio de: ${categoryTitle}`
+          : `Hello R&R Integral Services, I would like to inquire about: ${categoryTitle}`);
+
     window.open(`https://wa.me/${COMPANY_INFO.whatsapp}?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -69,13 +77,13 @@ export const ServicesSection = () => {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
           <span className="text-xs font-serif-brand font-bold tracking-widest text-amber-400 uppercase">
-            Nuestros Servicios
+            {t.services.badge}
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Catálogo Completo de Trámites y Soluciones
+            {t.services.title}
           </h2>
           <p className="text-slate-400 text-sm sm:text-base">
-            Ofrecemos asesoría y preparación profesional en 11 áreas clave. Utiliza el buscador o los filtros para encontrar tu trámite específico.
+            {t.services.subtitle}
           </p>
 
           {/* Search Bar */}
@@ -87,7 +95,7 @@ export const ServicesSection = () => {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Buscar trámite: Ej. Asilo, 1040, LLC, QuickBooks, Apostilla, Divorcio..."
+              placeholder={t.services.searchPlaceholder}
               className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all text-sm"
             />
             {searchTerm && (
@@ -95,7 +103,7 @@ export const ServicesSection = () => {
                 onClick={() => setSearchTerm('')}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-slate-500 hover:text-slate-300"
               >
-                Limpiar
+                {t.services.clearSearch}
               </button>
             )}
           </div>
@@ -111,7 +119,7 @@ export const ServicesSection = () => {
                 : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white'
             }`}
           >
-            Todos ({SERVICES_DATA.length})
+            {t.services.all} ({SERVICES_DATA.length})
           </button>
           {SERVICES_DATA.map((cat) => (
             <button
@@ -123,7 +131,7 @@ export const ServicesSection = () => {
                   : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white'
               }`}
             >
-              {cat.title}
+              {cat.title[lang]}
             </button>
           ))}
         </div>
@@ -131,12 +139,12 @@ export const ServicesSection = () => {
         {/* Services Grid */}
         {filteredServices.length === 0 ? (
           <div className="text-center py-16 glass-card rounded-2xl border border-slate-800">
-            <p className="text-slate-400 text-base">No encontramos resultados para "{searchTerm}".</p>
+            <p className="text-slate-400 text-base">{t.services.noResults} "{searchTerm}".</p>
             <button
               onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}
               className="mt-4 px-4 py-2 rounded-lg bg-amber-500 text-slate-950 text-xs font-bold"
             >
-              Ver todos los servicios
+              {t.services.viewAllBtn}
             </button>
           </div>
         ) : (
@@ -158,36 +166,36 @@ export const ServicesSection = () => {
                       </div>
                       <div>
                         <h3 className="font-serif-brand text-lg font-bold text-white group-hover:text-amber-300 transition-colors">
-                          {cat.title}
+                          {cat.title[lang]}
                         </h3>
                         {cat.subtitle && (
                           <span className="text-[11px] text-slate-400 block">
-                            {cat.subtitle}
+                            {cat.subtitle[lang]}
                           </span>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Special Badges (QuickBooks, IRS, RON, etc.) */}
+                  {/* Special Badges */}
                   {cat.badge && (
                     <div className="mb-4">
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold border ${cat.colorTheme.badgeBg} ${cat.colorTheme.badgeText}`}>
                         {cat.badgeType === 'quickbooks' && <span className="text-emerald-400 font-extrabold">qb</span>}
                         {cat.badgeType === 'irs' && <span className="font-serif-brand">IRS</span>}
-                        {cat.badge}
+                        {cat.badge[lang]}
                       </span>
                     </div>
                   )}
 
                   {/* Service Items List */}
                   <ul className="space-y-2 mb-6">
-                    {cat.items.map((item, idx) => {
+                    {cat.items[lang].map((item, idx) => {
                       const isHighlighted = searchTerm && item.toLowerCase().includes(searchTerm.toLowerCase());
                       return (
                         <li
                           key={idx}
-                          onClick={() => handleWhatsappClick(cat.title, item)}
+                          onClick={() => handleWhatsappClick(cat.title[lang], item)}
                           className={`flex items-start gap-2 text-xs transition-colors cursor-pointer group/item py-0.5 ${
                             isHighlighted ? 'text-amber-300 font-semibold bg-amber-500/10 px-2 rounded' : 'text-slate-300 hover:text-white'
                           }`}
@@ -203,14 +211,14 @@ export const ServicesSection = () => {
                 {/* Footer Action for Card */}
                 <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
                   <button
-                    onClick={() => handleWhatsappClick(cat.title)}
+                    onClick={() => handleWhatsappClick(cat.title[lang])}
                     className="flex items-center gap-2 text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors"
                   >
                     <MessageCircle className="w-3.5 h-3.5" />
-                    <span>Consultar Trámite</span>
+                    <span>{t.services.consultBtn}</span>
                   </button>
                   <span className="text-[10px] text-slate-500 uppercase tracking-wider">
-                    {cat.items.length} Opciones
+                    {cat.items[lang].length} {t.services.optionsCount}
                   </span>
                 </div>
 

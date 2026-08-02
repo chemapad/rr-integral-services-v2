@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, MessageCircle, Send, CheckCircle2 } from 'lucide-react';
 import { COMPANY_INFO, SERVICES_DATA } from '../data/servicesData';
+import { useLanguageTheme } from '../context/LanguageThemeContext';
 
 export const ContactSection = () => {
+  const { lang, t } = useLanguageTheme();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
-    service: 'Inmigración',
+    service: SERVICES_DATA[0].title[lang],
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
@@ -16,11 +18,17 @@ export const ContactSection = () => {
     e.preventDefault();
     
     // Format message for WhatsApp redirect
-    const whatsappText = `Hola R&R Integral Services, mi nombre es ${formData.name}. 
+    const whatsappText = lang === 'es'
+      ? `Hola R&R Integral Services, mi nombre es ${formData.name}. 
 📱 Teléfono: ${formData.phone}
 ✉️ Email: ${formData.email || 'N/A'}
 📋 Servicio de Interés: ${formData.service}
-💬 Mensaje: ${formData.message}`;
+💬 Mensaje: ${formData.message}`
+      : `Hello R&R Integral Services, my name is ${formData.name}.
+📱 Phone: ${formData.phone}
+✉️ Email: ${formData.email || 'N/A'}
+📋 Service of Interest: ${formData.service}
+💬 Message: ${formData.message}`;
 
     window.open(`https://wa.me/${COMPANY_INFO.whatsapp}?text=${encodeURIComponent(whatsappText)}`, '_blank');
     setSubmitted(true);
@@ -32,13 +40,13 @@ export const ContactSection = () => {
         
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <span className="text-xs font-serif-brand font-bold tracking-widest text-amber-400 uppercase">
-            Estamos Listos Para Servirte
+            {t.contact.badge}
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Ponte en Contacto con Nosotros
+            {t.contact.title}
           </h2>
           <p className="text-slate-400 text-sm sm:text-base">
-            Visítanos en nuestra oficina en Kissimmee, Florida, llámanos o envíanos un mensaje directo por WhatsApp.
+            {t.contact.subtitle}
           </p>
         </div>
 
@@ -53,7 +61,7 @@ export const ContactSection = () => {
                 <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
                   <MapPin className="w-5 h-5" />
                 </div>
-                <h3 className="font-serif-brand font-bold text-white text-base">Dirección de Oficina</h3>
+                <h3 className="font-serif-brand font-bold text-white text-base">{t.contact.officeTitle}</h3>
               </div>
               <p className="text-slate-300 text-sm leading-relaxed pl-1">
                 {COMPANY_INFO.address}
@@ -65,7 +73,7 @@ export const ContactSection = () => {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 text-xs font-semibold text-amber-400 hover:text-amber-300"
                 >
-                  <span>Abrir en Google Maps</span>
+                  <span>{t.contact.openMaps}</span>
                   <Send className="w-3 h-3" />
                 </a>
               </div>
@@ -77,7 +85,7 @@ export const ContactSection = () => {
                 <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
                   <Phone className="w-5 h-5" />
                 </div>
-                <h3 className="font-serif-brand font-bold text-white text-base">Teléfonos de Atención</h3>
+                <h3 className="font-serif-brand font-bold text-white text-base">{t.contact.phonesTitle}</h3>
               </div>
               <div className="space-y-3 pt-1">
                 {COMPANY_INFO.phones.map((phone, idx) => (
@@ -87,7 +95,7 @@ export const ContactSection = () => {
                     className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-500/40 text-slate-200 hover:text-white transition-all group"
                   >
                     <span className="font-semibold text-sm">{phone.display}</span>
-                    <span className="text-xs text-amber-400 group-hover:translate-x-1 transition-transform">Llamar directo &rarr;</span>
+                    <span className="text-xs text-amber-400 group-hover:translate-x-1 transition-transform">{t.contact.callDirect}</span>
                   </a>
                 ))}
               </div>
@@ -99,7 +107,7 @@ export const ContactSection = () => {
                 <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
                   <Mail className="w-5 h-5" />
                 </div>
-                <h3 className="font-serif-brand font-bold text-white text-base">Correo & Redes Sociales</h3>
+                <h3 className="font-serif-brand font-bold text-white text-base">{t.contact.emailSocialTitle}</h3>
               </div>
               <div className="space-y-2 text-sm text-slate-300">
                 <a href={`mailto:${COMPANY_INFO.email}`} className="block hover:text-amber-400 transition-colors">
@@ -139,22 +147,22 @@ export const ContactSection = () => {
             <div className="glass-card p-8 rounded-3xl border border-slate-800 relative">
               
               <h3 className="font-serif-brand text-2xl font-bold text-white mb-2">
-                Solicita una Consulta
+                {t.contact.formTitle}
               </h3>
               <p className="text-slate-400 text-xs sm:text-sm mb-6">
-                Completa tus datos y te responderemos por WhatsApp o llamada de inmediato.
+                {t.contact.formSub}
               </p>
 
               {submitted ? (
                 <div className="text-center py-12 space-y-4">
                   <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
-                  <h4 className="font-serif-brand text-xl font-bold text-white">¡Gracias por contactarnos!</h4>
-                  <p className="text-slate-300 text-sm">Te hemos redirigido a WhatsApp para continuar la atención personalizada.</p>
+                  <h4 className="font-serif-brand text-xl font-bold text-white">{t.contact.successTitle}</h4>
+                  <p className="text-slate-300 text-sm">{t.contact.successSub}</p>
                   <button
                     onClick={() => setSubmitted(false)}
                     className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold"
                   >
-                    Enviar otra consulta
+                    {t.contact.sendAnother}
                   </button>
                 </div>
               ) : (
@@ -162,7 +170,7 @@ export const ContactSection = () => {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1">Nombre Completo *</label>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">{t.contact.fullName}</label>
                       <input
                         type="text"
                         required
@@ -173,7 +181,7 @@ export const ContactSection = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1">Teléfono o WhatsApp *</label>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">{t.contact.phone}</label>
                       <input
                         type="tel"
                         required
@@ -187,7 +195,7 @@ export const ContactSection = () => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1">Correo Electrónico (Opcional)</label>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">{t.contact.email}</label>
                       <input
                         type="email"
                         value={formData.email}
@@ -197,15 +205,15 @@ export const ContactSection = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1">Servicio Requerido *</label>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">{t.contact.serviceRequired}</label>
                       <select
                         value={formData.service}
                         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                         className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-amber-500"
                       >
                         {SERVICES_DATA.map((cat) => (
-                          <option key={cat.id} value={cat.title}>
-                            {cat.title} {cat.subtitle}
+                          <option key={cat.id} value={cat.title[lang]}>
+                            {cat.title[lang]} {cat.subtitle?.[lang]}
                           </option>
                         ))}
                       </select>
@@ -213,13 +221,13 @@ export const ContactSection = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Detalles de tu consulta *</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">{t.contact.details}</label>
                     <textarea
                       rows={4}
                       required
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Escribe brevemente tu caso o trámite a realizar..."
+                      placeholder={t.contact.detailsPlaceholder}
                       className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-amber-500"
                     />
                   </div>
@@ -229,7 +237,7 @@ export const ContactSection = () => {
                     className="w-full py-4 rounded-xl bg-gold-gradient hover:opacity-95 text-slate-950 font-bold text-sm shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
                   >
                     <MessageCircle className="w-5 h-5 fill-slate-950" />
-                    <span>Enviar Consulta a WhatsApp</span>
+                    <span>{t.contact.submitBtn}</span>
                   </button>
 
                 </form>

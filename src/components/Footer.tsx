@@ -1,8 +1,15 @@
 import { MessageCircle, Phone, MapPin, Mail, ArrowUp } from 'lucide-react';
 import { COMPANY_INFO, SERVICES_DATA } from '../data/servicesData';
+import { useLanguageTheme } from '../context/LanguageThemeContext';
 
 export const Footer = () => {
-  const whatsappUrl = `https://wa.me/${COMPANY_INFO.whatsapp}?text=${encodeURIComponent('Hola R&R Integral Services, deseo información sobre sus servicios.')}`;
+  const { lang, t } = useLanguageTheme();
+
+  const whatsappUrl = `https://wa.me/${COMPANY_INFO.whatsapp}?text=${encodeURIComponent(
+    lang === 'es'
+      ? 'Hola R&R Integral Services, deseo información sobre sus servicios.'
+      : 'Hello R&R Integral Services, I would like information about your services.'
+  )}`;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -25,23 +32,23 @@ export const Footer = () => {
               </span>
             </div>
             <p className="text-slate-400 leading-relaxed">
-              {COMPANY_INFO.slogan}
+              {COMPANY_INFO.slogan[lang]}
             </p>
             <p className="text-amber-400 font-serif-brand font-semibold text-xs tracking-wide">
-              "{COMPANY_INFO.secondarySlogan}"
+              "{COMPANY_INFO.secondarySlogan[lang]}"
             </p>
           </div>
 
           {/* Col 2: Services Highlights */}
           <div className="space-y-3">
             <h4 className="font-serif-brand font-bold text-slate-200 text-sm tracking-wide uppercase">
-              Áreas de Servicio
+              {t.footer.servicesCol}
             </h4>
             <ul className="space-y-2">
               {SERVICES_DATA.slice(0, 6).map((cat) => (
                 <li key={cat.id}>
                   <a href="#servicios" className="hover:text-amber-400 transition-colors">
-                    {cat.title} {cat.subtitle}
+                    {cat.title[lang]} {cat.subtitle?.[lang]}
                   </a>
                 </li>
               ))}
@@ -51,13 +58,13 @@ export const Footer = () => {
           {/* Col 3: More Services */}
           <div className="space-y-3">
             <h4 className="font-serif-brand font-bold text-slate-200 text-sm tracking-wide uppercase">
-              Otros Trámites
+              {t.footer.otherCol}
             </h4>
             <ul className="space-y-2">
               {SERVICES_DATA.slice(6).map((cat) => (
                 <li key={cat.id}>
                   <a href="#servicios" className="hover:text-amber-400 transition-colors">
-                    {cat.title} {cat.subtitle}
+                    {cat.title[lang]} {cat.subtitle?.[lang]}
                   </a>
                 </li>
               ))}
@@ -67,7 +74,7 @@ export const Footer = () => {
           {/* Col 4: Contact & Location */}
           <div className="space-y-3">
             <h4 className="font-serif-brand font-bold text-slate-200 text-sm tracking-wide uppercase">
-              Contacto Directo
+              {t.footer.contactCol}
             </h4>
             <div className="space-y-2">
               <p className="flex items-start gap-2">
@@ -93,13 +100,13 @@ export const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
-          <p>© {new Date().getFullYear()} R & R INTEGRAL SERVICES LLC. Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} R & R INTEGRAL SERVICES LLC. {t.footer.rights}</p>
           <div className="flex items-center gap-4">
             <button
               onClick={scrollToTop}
               className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-1"
             >
-              <span>Volver arriba</span>
+              <span>{t.footer.scrollTop}</span>
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -113,11 +120,11 @@ export const Footer = () => {
         target="_blank"
         rel="noreferrer"
         className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-2xl shadow-emerald-500/40 border-2 border-emerald-300 transition-all hover:scale-110 flex items-center justify-center group"
-        aria-label="Contactar por WhatsApp"
+        aria-label="WhatsApp"
       >
         <MessageCircle className="w-7 h-7 fill-slate-950" />
         <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-bold text-xs pl-0 group-hover:pl-2">
-          Consultar Trámite
+          {t.footer.floatingWa}
         </span>
       </a>
     </footer>

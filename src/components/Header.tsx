@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
-import { Phone, MessageCircle, Menu, X, MapPin, Mail, ShieldCheck } from 'lucide-react';
+import { useState } from 'react';
+import { Phone, MessageCircle, Menu, X, MapPin, Mail, ShieldCheck, Sun, Moon, Globe } from 'lucide-react';
 import { COMPANY_INFO } from '../data/servicesData';
+import { useLanguageTheme } from '../context/LanguageThemeContext';
 
-interface HeaderProps {
-  onSelectService?: (serviceName: string) => void;
-}
-
-export const Header: React.FC<HeaderProps> = () => {
+export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { lang, setLang, theme, toggleTheme, t } = useLanguageTheme();
 
-  const whatsappUrl = `https://wa.me/${COMPANY_INFO.whatsapp}?text=${encodeURIComponent('Hola R&R Integral Services, me gustaría solicitar información sobre sus servicios.')}`;
+  const whatsappUrl = `https://wa.me/${COMPANY_INFO.whatsapp}?text=${encodeURIComponent(
+    lang === 'es'
+      ? 'Hola R&R Integral Services, me gustaría solicitar información sobre sus servicios.'
+      : 'Hello R&R Integral Services, I would like to inquire about your services.'
+  )}`;
 
   return (
-    <header className="sticky top-0 z-50 w-full glass-panel border-b border-slate-800/80">
+    <header className="sticky top-0 z-50 w-full glass-panel border-b border-slate-800/80 transition-colors">
       {/* Top Bar for contact info */}
       <div className="hidden lg:block bg-slate-950/80 border-b border-slate-800/50 py-1.5 text-xs text-slate-400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
@@ -28,7 +30,7 @@ export const Header: React.FC<HeaderProps> = () => {
           </div>
           <div className="flex items-center gap-4 font-medium text-slate-300">
             <span className="text-amber-400 font-semibold flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" /> Atendemos en toda Florida
+              <ShieldCheck className="w-3.5 h-3.5" /> {t.topBarBadge}
             </span>
             <span>|</span>
             <a href={COMPANY_INFO.instagramUrl} target="_blank" rel="noreferrer" className="hover:text-amber-400 transition-colors">
@@ -53,47 +55,99 @@ export const Header: React.FC<HeaderProps> = () => {
                 R & R <span className="gold-gradient-text">INTEGRAL SERVICES</span>
               </span>
               <span className="text-[10px] tracking-wider text-slate-400 font-medium uppercase">
-                Soluciones Legales, Fiscales & Notariales
+                {t.headerSub}
               </span>
             </div>
           </a>
 
           {/* Desktop Nav Items */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <a href="#inicio" className="hover:text-amber-400 transition-colors">Inicio</a>
-            <a href="#servicios" className="hover:text-amber-400 transition-colors">Servicios</a>
-            <a href="#nosotros" className="hover:text-amber-400 transition-colors">Por qué elegirnos</a>
-            <a href="#contacto" className="hover:text-amber-400 transition-colors">Contacto</a>
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+            <a href="#inicio" className="hover:text-amber-400 transition-colors">{t.nav.home}</a>
+            <a href="#servicios" className="hover:text-amber-400 transition-colors">{t.nav.services}</a>
+            <a href="#nosotros" className="hover:text-amber-400 transition-colors">{t.nav.whyUs}</a>
+            <a href="#contacto" className="hover:text-amber-400 transition-colors">{t.nav.contact}</a>
           </nav>
 
-          {/* Action CTAs */}
+          {/* Toggles & CTAs */}
           <div className="hidden sm:flex items-center gap-3">
+            
+            {/* Language Toggle */}
+            <div className="flex items-center rounded-lg bg-slate-800/80 border border-slate-700 p-1 text-xs font-semibold">
+              <button
+                onClick={() => setLang('es')}
+                className={`px-2 py-1 rounded-md flex items-center gap-1 transition-all ${
+                  lang === 'es' ? 'bg-amber-500 text-slate-950 shadow' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                <span>🇪🇸</span> ES
+              </button>
+              <button
+                onClick={() => setLang('en')}
+                className={`px-2 py-1 rounded-md flex items-center gap-1 transition-all ${
+                  lang === 'en' ? 'bg-amber-500 text-slate-950 shadow' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                <span>🇺🇸</span> EN
+              </button>
+            </div>
+
+            {/* Theme Toggle Switch */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-slate-800/80 border border-slate-700 text-amber-400 hover:text-amber-300 hover:bg-slate-700 transition-all"
+              title={theme === 'dark' ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro'}
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4 text-slate-700" />}
+            </button>
+
+            {/* Direct Call Button */}
             <a
               href={`tel:${COMPANY_INFO.phones[0].raw}`}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition-all hover:scale-[1.02]"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition-all hover:scale-[1.02]"
             >
               <Phone className="w-3.5 h-3.5 text-amber-400" />
               <span>{COMPANY_INFO.phones[0].display}</span>
             </a>
+
+            {/* WhatsApp CTA */}
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gold-gradient hover:opacity-95 text-slate-950 font-bold text-xs shadow-md shadow-amber-500/20 transition-all hover:scale-[1.02]"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-gold-gradient hover:opacity-95 text-slate-950 font-bold text-xs shadow-md shadow-amber-500/20 transition-all hover:scale-[1.02]"
             >
               <MessageCircle className="w-4 h-4 fill-slate-950" />
-              <span>WhatsApp Directo</span>
+              <span>WhatsApp</span>
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg bg-slate-800/80 text-slate-300 hover:text-white"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile Controls & Menu Button */}
+          <div className="flex sm:hidden items-center gap-2">
+            {/* Quick Lang toggle on mobile header */}
+            <button
+              onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
+              className="p-2 rounded-lg bg-slate-800/80 border border-slate-700 text-amber-400 font-bold text-xs flex items-center gap-1"
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>{lang.toUpperCase()}</span>
+            </button>
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-slate-800/80 border border-slate-700 text-amber-400"
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4 text-slate-700" />}
+            </button>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg bg-slate-800/80 text-slate-300 hover:text-white"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
 
         </div>
       </div>
@@ -101,34 +155,53 @@ export const Header: React.FC<HeaderProps> = () => {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-slate-800 bg-slate-950/95 backdrop-blur-xl px-4 pt-4 pb-6 space-y-4">
+          
+          <div className="flex items-center justify-between py-2 border-b border-slate-800/80">
+            <span className="text-xs text-slate-400 font-semibold">Idioma / Language:</span>
+            <div className="flex items-center gap-2 text-xs font-semibold">
+              <button
+                onClick={() => setLang('es')}
+                className={`px-3 py-1 rounded-md ${lang === 'es' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'}`}
+              >
+                🇪🇸 Español
+              </button>
+              <button
+                onClick={() => setLang('en')}
+                className={`px-3 py-1 rounded-md ${lang === 'en' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'}`}
+              >
+                🇺🇸 English
+              </button>
+            </div>
+          </div>
+
           <nav className="flex flex-col space-y-3 font-medium text-slate-300">
             <a
               href="#inicio"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400"
             >
-              Inicio
+              {t.nav.home}
             </a>
             <a
               href="#servicios"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400"
             >
-              Todos los Servicios (11 Categorías)
+              {t.nav.services} (11)
             </a>
             <a
               href="#nosotros"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400"
             >
-              Por Qué Elegirnos
+              {t.nav.whyUs}
             </a>
             <a
               href="#contacto"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400"
             >
-              Ubicación y Contacto
+              {t.nav.contact}
             </a>
           </nav>
           
@@ -138,7 +211,7 @@ export const Header: React.FC<HeaderProps> = () => {
               className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-slate-800 text-slate-200 text-sm font-semibold"
             >
               <Phone className="w-4 h-4 text-amber-400" />
-              Llamar: {COMPANY_INFO.phones[0].display}
+              {COMPANY_INFO.phones[0].display}
             </a>
             <a
               href={whatsappUrl}
@@ -147,7 +220,7 @@ export const Header: React.FC<HeaderProps> = () => {
               className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-gold-gradient text-slate-950 text-sm font-bold shadow-lg shadow-amber-500/20"
             >
               <MessageCircle className="w-4 h-4 fill-slate-950" />
-              Enviar Mensaje por WhatsApp
+              WhatsApp
             </a>
           </div>
         </div>
