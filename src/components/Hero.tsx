@@ -1,0 +1,103 @@
+import { ShieldCheck, Lock, Award, HeartHandshake, MessageCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { COMPANY_INFO } from '../data/servicesData';
+
+export const Hero = () => {
+  const whatsappUrl = `https://wa.me/${COMPANY_INFO.whatsapp}?text=${encodeURIComponent('Hola R&R Integral Services, deseo consultar por un trámite.')}`;
+
+  return (
+    <section id="inicio" className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+      {/* Subtle Background Radial Lights */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-10 right-10 w-[300px] h-[300px] bg-blue-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        {/* Top Floating Badge */}
+        <div className="flex justify-center mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-amber-500/30 text-amber-300 text-xs font-semibold tracking-wide shadow-lg">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+            <span>Atención Personalizada en Florida & Vía Remota (RON)</span>
+          </div>
+        </div>
+
+        {/* Hero Title & Subheadline */}
+        <div className="text-center max-w-4xl mx-auto space-y-6">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+            Soluciones Integrales Para Ti, Tu Familia y Tu Negocio.
+          </h1>
+
+          <p className="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-light">
+            Trámites de <span className="text-amber-400 font-semibold">Inmigración</span>, <span className="text-amber-400 font-semibold">Impuestos</span>, <span className="text-amber-400 font-semibold">Notary Public</span>, <span className="text-amber-400 font-semibold">Contabilidad</span>, <span className="text-amber-400 font-semibold">Apostillas</span> y más. Todo respaldado por profesionales experimentados.
+          </p>
+
+          {/* Primary Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <a
+              href="#servicios"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gold-gradient hover:opacity-95 text-slate-950 font-bold text-base shadow-xl shadow-amber-500/20 flex items-center justify-center gap-3 transition-all hover:scale-[1.02]"
+            >
+              <span>Explorar los 11 Servicios</span>
+              <ArrowRight className="w-5 h-5" />
+            </a>
+
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl glass-card hover:bg-slate-800 text-white font-semibold text-base border border-slate-700 flex items-center justify-center gap-3 transition-all hover:scale-[1.02]"
+            >
+              <MessageCircle className="w-5 h-5 text-emerald-400 fill-emerald-400/20" />
+              <span>Consulta Gratis por WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+        {/* 4 Pillars Badge Banner from Flyer */}
+        <div className="mt-16 pt-10 border-t border-slate-800/80">
+          <div className="text-center mb-8">
+            <span className="text-xs font-serif-brand font-bold tracking-widest text-amber-400 uppercase">
+              Nuestros Valores de Trabajo
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            
+            <div className="glass-card p-5 rounded-2xl border border-slate-800 flex flex-col items-center text-center space-y-2 group hover:border-amber-500/40 transition-all">
+              <div className="p-3 rounded-xl bg-blue-950/60 text-blue-400 border border-blue-800/40 group-hover:scale-110 transition-transform">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <h3 className="font-serif-brand font-bold text-slate-100 text-sm tracking-wide uppercase">Profesionalismo</h3>
+              <p className="text-xs text-slate-400">Atención especializada acorde a normativas legales vigentes.</p>
+            </div>
+
+            <div className="glass-card p-5 rounded-2xl border border-slate-800 flex flex-col items-center text-center space-y-2 group hover:border-amber-500/40 transition-all">
+              <div className="p-3 rounded-xl bg-amber-950/60 text-amber-400 border border-amber-800/40 group-hover:scale-110 transition-transform">
+                <Lock className="w-6 h-6" />
+              </div>
+              <h3 className="font-serif-brand font-bold text-slate-100 text-sm tracking-wide uppercase">Confidencialidad</h3>
+              <p className="text-xs text-slate-400">Resguardo total y seguro de tu información personal y financiera.</p>
+            </div>
+
+            <div className="glass-card p-5 rounded-2xl border border-slate-800 flex flex-col items-center text-center space-y-2 group hover:border-amber-500/40 transition-all">
+              <div className="p-3 rounded-xl bg-indigo-950/60 text-indigo-400 border border-indigo-800/40 group-hover:scale-110 transition-transform">
+                <Award className="w-6 h-6" />
+              </div>
+              <h3 className="font-serif-brand font-bold text-slate-100 text-sm tracking-wide uppercase">Responsabilidad</h3>
+              <p className="text-xs text-slate-400">Cumplimiento oportuno con cada uno de tus trámites requeridos.</p>
+            </div>
+
+            <div className="glass-card p-5 rounded-2xl border border-slate-800 flex flex-col items-center text-center space-y-2 group hover:border-amber-500/40 transition-all">
+              <div className="p-3 rounded-xl bg-emerald-950/60 text-emerald-400 border border-emerald-800/40 group-hover:scale-110 transition-transform">
+                <HeartHandshake className="w-6 h-6" />
+              </div>
+              <h3 className="font-serif-brand font-bold text-slate-100 text-sm tracking-wide uppercase">Compromiso</h3>
+              <p className="text-xs text-slate-400">Acompañamiento cercano durante todo el proceso hasta su éxito.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
