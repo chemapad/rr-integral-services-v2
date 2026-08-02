@@ -28,7 +28,7 @@ export const COMPANY_INFO = {
     es: "Confianza, experiencia y servicio que marcan la diferencia.",
     en: "Trust, experience, and service that make the difference."
   },
-  address: "421 W Venice St, Kissimmee, Florida 34741",
+  address: "421 W Vine St, Kissimmee, Florida 34741",
   addressShort: "Kissimmee, FL 34741",
   email: "rrintegralservicesllc@gmail.com",
   phones: [
@@ -36,8 +36,8 @@ export const COMPANY_INFO = {
     { display: "(305) 922-8242", raw: "3059228242" }
   ],
   whatsapp: "13529369133",
-  instagram: "@RYRTAXESERVICES",
-  instagramUrl: "https://instagram.com/RYRTAXESERVICES",
+  instagram: "@rrintegralservices",
+  instagramUrl: "https://instagram.com/rrintegralservices",
   facebookUrl: "https://facebook.com"
 };
 
